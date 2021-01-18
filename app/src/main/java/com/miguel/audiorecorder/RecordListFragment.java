@@ -243,7 +243,7 @@ public class RecordListFragment extends Fragment implements RecordingListAdapter
         mPlayBtn.setImageDrawable(getResources().getDrawable(R.drawable.player_pause_btn, null));
         mPlayerFileName.setText(file.getName());
         mPlayerHeader.setText(getResources().getString(R.string.playing));
-
+//
         // Set a completion listener on this instance
         mMediaPlayer.setOnCompletionListener(mp -> {
             stopAudio();
