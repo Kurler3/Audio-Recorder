@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AudioRecorder</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="press_mic_text">Press the mic button \n to start recording</string>
+    <string name="playing">Playing</string>
+    <string name="not_playing">Not Playing</string>
+    <string name="paused">Paused</string>
+    <string name="finished">Finished</string>
 </resources>

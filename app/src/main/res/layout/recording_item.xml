@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/recording_item_card_view">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/recording_item_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/list_play_btn" />
+
+        <TextView
+            android:id="@+id/recording_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="File name"
+            android:textColor="@color/colorDarkBlue"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/recording_item_size"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/recording_item_image_view"
+            app:layout_constraintTop_toTopOf="@+id/recording_item_image_view" />
+
+        <TextView
+            android:id="@+id/recording_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Date of creation"
+            app:layout_constraintBottom_toBottomOf="@+id/recording_item_image_view"
+            app:layout_constraintStart_toEndOf="@+id/recording_item_image_view" />
+
+        <TextView
+            android:id="@+id/recording_item_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/open_sans_semibold_1"
+            android:text="audio size"
+            app:layout_constraintBottom_toBottomOf="@+id/recording_item_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recording_item_image_view"
+            app:layout_constraintVertical_bias="1.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
