@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/recordFragment"
         android:name="com.miguel.audiorecorder.RecordFragment"
-        android:label="fragment_record"
-        tools:layout="@layout/fragment_record" >
+        android:label="Record"
+        tools:layout="@layout/fragment_record">
         <action
             android:id="@+id/action_recordFragment_to_recordListFragment"
             app:destination="@id/recordListFragment"
@@ -21,6 +21,6 @@
     <fragment
         android:id="@+id/recordListFragment"
         android:name="com.miguel.audiorecorder.RecordListFragment"
-        android:label="fragment_record_list"
+        android:label="Recordings List"
         tools:layout="@layout/fragment_record_list" />
 </navigation>

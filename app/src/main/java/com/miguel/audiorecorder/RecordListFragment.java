@@ -1,12 +1,20 @@
 package com.miguel.audiorecorder;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +39,8 @@ import java.util.Collections;
 
 public class RecordListFragment extends Fragment implements RecordingListAdapter.OnRecordingClickedListener {
     private static String TAG = "listFrag";
+    private static String[] STORAGE_PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static int STORAGE_PERMISSION_CODE = 100;
 
     private ConstraintLayout mPlayerSheetLayout;
     private BottomSheetBehavior mBottomSheetBehavior;
@@ -53,6 +63,7 @@ public class RecordListFragment extends Fragment implements RecordingListAdapter
 
     private MediaPlayer mMediaPlayer;
 
+    private boolean isStorageRequestAccepted = false;
     public RecordListFragment() {
 
     }
@@ -89,6 +100,19 @@ public class RecordListFragment extends Fragment implements RecordingListAdapter
 
         mRecordingsRecyclerView.setAdapter(mRecordingAdapter);
         mRecordingsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                onSwipeFile(viewHolder);
+            }
+        }).attachToRecyclerView(mRecordingsRecyclerView);
+
         //---------------------------------------------------------------------------------
         mBottomSheetBehavior = BottomSheetBehavior.from(mPlayerSheetLayout);
 
@@ -157,6 +181,58 @@ public class RecordListFragment extends Fragment implements RecordingListAdapter
                 }
             }
         });
+    }
+    private void onSwipeFile(RecyclerView.ViewHolder viewHolder){
+          if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED) {
+
+              int position = viewHolder.getAdapterPosition();
+
+              if(position==-1) return;
+
+              File fileSwapped = mFileList.get(position);
+
+              String fileName = fileSwapped.getName();
+
+              /** Can't delete the file until I know if the user wants or not to undo, but I can remove it from the list */
+              if (fileSwapped.exists()) {
+                  mRecordingAdapter.deleteFile(position);
+
+                  new AlertDialog.Builder(getContext()).setTitle("Recording Deletion")
+                          .setMessage("Are you sure you want to delete recording: " + fileName)
+                          .setPositiveButton("Confirm", (dialog, which) -> {
+                              if(fileSwapped.delete()){
+                                  Snackbar.make(getView(), "Recording deleted", Snackbar.LENGTH_LONG)
+                                          .setAction("Ok", null).show();
+                              }else{
+                                  Snackbar.make(getView(), "Recording could not be deleted", Snackbar.LENGTH_LONG)
+                                          .setAction("Ok", null).show();
+                              }
+                          })
+                          .setNegativeButton("Undo", (dialog, which) -> mRecordingAdapter.addFile(fileSwapped, position))
+                          .create().show();
+              }else{
+                  Snackbar.make(getView(), "Something went wrong", Snackbar.LENGTH_LONG)
+                          .setAction("Ok", null)
+                          .show();
+              }
+          }else{
+              // Disable Swipping
+              requestStoragePermission();
+              //Update the adapter
+              mRecordingAdapter.notifyDataSetChanged();
+          }
+    }
+    private void requestStoragePermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            new AlertDialog.Builder(getContext()).setTitle("Access To Storage Required")
+                    .setMessage("To delete recordings access to the storage is necessary")
+                    .setPositiveButton("Ok", (dialog, which)
+                            -> ActivityCompat.requestPermissions(getActivity(), STORAGE_PERMISSIONS, STORAGE_PERMISSION_CODE))
+                    .setNegativeButton("Cancel", null)
+                    .create().show();
+        }else{
+            ActivityCompat.requestPermissions(getActivity(), STORAGE_PERMISSIONS, STORAGE_PERMISSION_CODE);
+        }
     }
     @Override
     public void onClickListener(File toBePlayed) {

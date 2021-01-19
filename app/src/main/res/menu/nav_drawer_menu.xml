@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/recordFragment"
+            android:title="@string/record"
+            android:icon="@drawable/record_icon"/>
+        <item android:id="@+id/recordListFragment"
+            android:title="@string/recordings_list"
+            android:icon="@drawable/recording_list"/>
+    </group>
+    <item android:title="Others">
+        <menu>
+            <item android:id="@+id/settings_drawer_item"
+                android:title="@string/settings"
+                android:icon="@drawable/settings_icon"/>
+        </menu>
+    </item>
+</menu>

@@ -65,4 +65,12 @@ public class RecordingListAdapter extends RecyclerView.Adapter<RecordingListAdap
     public interface OnRecordingClickedListener{
         void onClickListener(File file);
     }
+    public void deleteFile(int position){
+        mFileList.remove(position);
+        notifyItemRemoved(position);
+    }
+    public void addFile(File file, int position){
+        mFileList.add(position, file);
+        notifyItemInserted(position);
+    }
 }

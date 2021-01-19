@@ -7,4 +7,7 @@
     <string name="not_playing">Not Playing</string>
     <string name="paused">Paused</string>
     <string name="finished">Finished</string>
+    <string name="settings">Settings</string>
+    <string name="recordings_list">Recordings List</string>
+    <string name="record">Record</string>
 </resources>
